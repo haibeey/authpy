@@ -1,4 +1,4 @@
-
+import hashlib
 import json
 import os
 import sqlalchemy.exc as E
@@ -39,11 +39,11 @@ class Operation(object):
 
         
 def Hash(value):
-    "you can specify your own hash functions as design hash function is a tricky business"
-    d={'a':22,'b':25,'c':7,'d':9,'e':18,'f':21,'g':3,'h':5,'i':6,'j':20,'k':11,'l':13,'m':17,\
-           'n':4,'o':2,'p':26,'q':16,'r':1,'s':10,'t':14,'u':19,'v':15,'w':23,'x':12,'y':8,'z':24}
-    value=sum([d[i]*ord(i) for i in value if i in d])
-    return value%1001
+    baseHash=hashlib.sha1()
+    baseHash.update(str(value)) #incase a non string object is passed
+    return baseHash.hexdigest()
+
+
 
 class auth(object):
     def __init__(self):
@@ -52,7 +52,7 @@ class auth(object):
     def insert(self,name):
         return self.operation.insert(name)
 
-                                            
+print(Hash("a."))                                            
 #a=auth()
 #print(a.insert('ab'),Hash("ab"))
 #print(a.insert('ab'),Hash('ab'))
